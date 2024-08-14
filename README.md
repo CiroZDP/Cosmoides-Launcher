@@ -1,2 +1,2 @@
-# Cosmoides-Launcher
-The PERFECT Launcher for ClassiCube (Programmed in Java)
+# 🌠 Cosmoides Launcher
+The **PERFECT** Launcher for ClassiCube. Programmed in Java.
