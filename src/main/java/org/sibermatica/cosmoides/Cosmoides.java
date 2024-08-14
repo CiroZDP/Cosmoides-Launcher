@@ -1,11 +1,13 @@
 package org.sibermatica.cosmoides;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -41,11 +43,15 @@ public class Cosmoides extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cosmoides Launcher 1.0.0");
@@ -74,24 +80,32 @@ public class Cosmoides extends javax.swing.JFrame {
                 jButton1MouseClicked(evt);
             }
         });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
-        jButton1.setBounds(460, 510, 280, 60);
+        jButton1.setBounds(460, 360, 280, 60);
         jButton1.getAccessibleContext().setAccessibleName("");
 
+        jList1.setBackground(new java.awt.Color(32, 32, 32));
+        jList1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(32, 32, 32), 6));
+        jList1.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Latest Release", "Latest Build" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jList1.setCellRenderer(new MinecraftIconCellRenderer());
+        jList1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jList1ValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(jList1);
-
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(0, 0, 190, 630);
+        jPanel1.add(jList1);
+        jList1.setBounds(0, 0, 200, 630);
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
         jPanel2.setLayout(null);
@@ -111,7 +125,32 @@ public class Cosmoides extends javax.swing.JFrame {
         jProgressBar1.setBounds(110, 180, 620, 20);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(190, 40, 830, 310);
+        jPanel2.setBounds(200, 40, 810, 310);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/splash.jpg"))); // NOI18N
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(290, 30, 620, 360);
+
+        jPanel3.setBackground(new java.awt.Color(66, 66, 66));
+        jPanel3.setLayout(null);
+
+        jLabel3.setFont(getMinecraftTen().deriveFont(Font.PLAIN, 28));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("ChangeLog");
+        jPanel3.add(jLabel3);
+        jLabel3.setBounds(30, 10, 180, 50);
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("- PS3: Now it works on real hardware!");
+        jPanel3.add(jLabel4);
+        jLabel4.setBounds(50, 60, 580, 30);
+
+        jScrollPane1.setViewportView(jPanel3);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(250, 430, 710, 200);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -181,6 +220,10 @@ public class Cosmoides extends javax.swing.JFrame {
         progressBarManagerThread.start();
     }//GEN-LAST:event_jButton1MouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public Font getMinecraftTen() {
         try {
             return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/Minecraft-Ten-ed29a.otf"));
@@ -205,6 +248,7 @@ public class Cosmoides extends javax.swing.JFrame {
     public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        FlatLaf.setGlobalExtraDefaults( Collections.singletonMap( "@accentColor", "#FF9F0A" ) );
         FlatDarkLaf.setup();
         //</editor-fold>
 
@@ -233,6 +277,9 @@ public class Cosmoides extends javax.swing.JFrame {
                 } catch (Exception ignored) {
                 }
 
+                if (new File("classicube/ClassiCube.exe").exists())
+                    cosmoides.jButton1.setText("PLAY");
+                
                 cosmoides.jPanel2.setVisible(false);
                 cosmoides.setVisible(true);
             }
@@ -242,9 +289,13 @@ public class Cosmoides extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
