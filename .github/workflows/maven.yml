@@ -29,4 +29,8 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-      
+    - uses: ./.github/actions/upload_build
+    if: ${{ always() && steps.compile.outcome == 'success' }}
+    with:
+      SOURCE_FILE: 'target/cosmoides-1.0.0-jar-with-dependencies.jar'
+      DEST_NAME: 'Cosmoides_Launcher-1.0.0.jar'
