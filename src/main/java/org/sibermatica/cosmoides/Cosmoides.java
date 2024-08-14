@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +22,7 @@ public class Cosmoides extends javax.swing.JFrame {
 
     public static final int BUILD_RELEASE = 0;
     public static final int BUILD_NIGHTLY = 1;
-    
+
     /**
      * Creates new form Cosmoides
      */
@@ -128,35 +129,53 @@ public class Cosmoides extends javax.swing.JFrame {
         }
         return "suerte descargando esto!";
     }
-    
+
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         String path = String.join(File.separator, "classicube", "ClassiCube.exe");
         File file = new File(path);
-        
+
         if (file.exists()) {
             jButton1.setText("PLAY");
-            try {
-                Runtime.getRuntime().exec(path);
-            } catch (Exception e) {
-            }
-            
+
+            /*
+             * Using ProcessBuilder instead of Runtime exec
+             * should fix the issue #1 (Classicube crashes unless you close the launcher)
+             */
+            Thread classiCubeProcessThread = new Thread(() -> {
+                try {
+                    ProcessBuilder pb = new ProcessBuilder(path);
+                    Process p = pb.start();
+                    pb = null;
+                    p = null;
+                    System.gc();
+                } catch (Exception ignored) {
+                    JOptionPane.showMessageDialog(this, "Failed to start ClassiCube!", "Launcher Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            classiCubeProcessThread.start();
+
             return;
         }
-        
+
         Future<Void> future = DownloadHelper.download(getBuildURLByNumber(jList1.getSelectedIndex()), path);
         Runnable progressBarManagerRunnable = () -> {
-            if (jPanel2.isVisible())
+            if (jPanel2.isVisible()) {
                 return;
-            
+            }
+
             while (!future.isDone()) {
                 jPanel2.setVisible(true);
                 jButton1.setText("DOWNLOAD");
             }
-            
+
             jPanel2.setVisible(false);
             jButton1.setText("PLAY");
+
+            // Execute the button another time
+            jButton1MouseClicked(null);
         };
-        
+
         Thread progressBarManagerThread = new Thread(progressBarManagerRunnable);
         progressBarManagerThread.start();
     }//GEN-LAST:event_jButton1MouseClicked
@@ -166,19 +185,19 @@ public class Cosmoides extends javax.swing.JFrame {
             return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/Minecraft-Ten-ed29a.otf"));
         } catch (Exception ignored) {
         }
-        
+
         return new Font("Dialog", Font.PLAIN, 12);
     }
-    
+
     public Font getMinecraftFont() {
         try {
             return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/Mojangles.ttf"));
         } catch (Exception ignored) {
         }
-        
+
         return new Font("Dialog", Font.PLAIN, 12);
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -197,7 +216,7 @@ public class Cosmoides extends javax.swing.JFrame {
                     for (int resolution = 16; resolution < 257; resolution *= 2) {
                         iconPaths.add("/icon/icon-" + resolution + ".png");
                     }
-                    
+
                     List<BufferedImage> icons = iconPaths.stream().map(path -> {
                         try {
                             return ImageIO.read(Cosmoides.class.getResourceAsStream(path));
@@ -205,13 +224,14 @@ public class Cosmoides extends javax.swing.JFrame {
                             return null;
                         }
                     }).collect(Collectors.toList());
-                    
-                    if (!icons.stream().anyMatch(o -> o == null))
+
+                    if (!icons.stream().anyMatch(o -> o == null)) {
                         cosmoides.setIconImages(icons);
-                
+                    }
+
                 } catch (Exception ignored) {
                 }
-                
+
                 cosmoides.jPanel2.setVisible(false);
                 cosmoides.setVisible(true);
             }
