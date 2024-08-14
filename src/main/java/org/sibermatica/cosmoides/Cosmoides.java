@@ -144,6 +144,7 @@ public class Cosmoides extends javax.swing.JFrame {
             Thread classiCubeProcessThread = new Thread(() -> {
                 try {
                     ProcessBuilder pb = new ProcessBuilder(path);
+                    pb.directory(file.getParentFile()); // Fix issue #2 (Classicube selects current directory as default)
                     Process p = pb.start();
                     pb = null;
                     p = null;
