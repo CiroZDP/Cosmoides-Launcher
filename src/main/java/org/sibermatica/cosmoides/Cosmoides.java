@@ -42,6 +42,7 @@ public class Cosmoides extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jList1 = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
@@ -54,7 +55,7 @@ public class Cosmoides extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Cosmoides Launcher 1.0.0");
+        setTitle("Cosmoides Launcher 2.5.0");
         setBackground(new java.awt.Color(38, 38, 38));
         setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         setForeground(new java.awt.Color(255, 255, 255));
@@ -68,6 +69,20 @@ public class Cosmoides extends javax.swing.JFrame {
         jPanel1.setToolTipText("");
         jPanel1.setName("main_container"); // NOI18N
         jPanel1.setLayout(null);
+
+        jButton2.setBackground(new java.awt.Color(0, 110, 55));
+        jButton2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("↑");
+        jButton2.setBorder(null);
+        jButton2.setEnabled(false);
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+        jButton2.setBounds(717, 362, 20, 55);
 
         jButton1.setBackground(new java.awt.Color(0, 137, 69));
         jButton1.setFont(getMinecraftTen().deriveFont(Font.PLAIN, 24));
@@ -154,12 +169,15 @@ public class Cosmoides extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
+        getAccessibleContext().setAccessibleName("Cosmoides Launcher 2.5.0");
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         jButton1.setEnabled(true);
+        jButton2.setEnabled(true);
     }//GEN-LAST:event_jList1ValueChanged
 
     private String getBuildURLByNumber(int number) {
@@ -170,6 +188,9 @@ public class Cosmoides extends javax.swing.JFrame {
     }
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        if (!jButton1.isEnabled())
+            return;
+        
         String path = String.join(File.separator, "classicube", "ClassiCube.exe");
         File file = new File(path);
 
@@ -224,6 +245,13 @@ public class Cosmoides extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        if (!jButton2.isEnabled())
+            return;
+        
+        GameOptions.instance.setVisible(true);
+    }//GEN-LAST:event_jButton2MouseClicked
+
     public Font getMinecraftTen() {
         try {
             return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/Minecraft-Ten-ed29a.otf"));
@@ -277,8 +305,9 @@ public class Cosmoides extends javax.swing.JFrame {
                 } catch (Exception ignored) {
                 }
 
-                if (new File("classicube/ClassiCube.exe").exists())
-                    cosmoides.jButton1.setText("PLAY");
+                File file = new File("classicube/ClassiCube.exe");
+                if (file.exists())
+                    file.delete();
                 
                 cosmoides.jPanel2.setVisible(false);
                 cosmoides.setVisible(true);
@@ -288,6 +317,7 @@ public class Cosmoides extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
