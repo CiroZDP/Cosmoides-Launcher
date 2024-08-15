@@ -35,5 +35,5 @@ jobs:
     - uses: ./.github/actions/upload_build
       if: ${{ always() && steps.compile.outcome == 'success' }}
       with:
-        SOURCE_FILE: 'target/cosmoides-1.0.0-jar-with-dependencies.jar'
-        DEST_NAME: 'Cosmoides_Launcher-1.0.0.jar'
+        SOURCE_FILE: 'target/cosmoides-2.5.0-jar-with-dependencies.jar'
+        DEST_NAME: 'Cosmoides_Launcher-2.5.0.jar'
